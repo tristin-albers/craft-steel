@@ -55,6 +55,37 @@ import { Difficulties, type Difficulty } from '../../lib/types/Difficulty';
 
 <div class="bg-base-200 min-h-screen">
   <div class="row">
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Players</span>
+      </div>
+      <input type="number" placeholder="Player Count" bind:value={playerCount} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    </label>
+  </div>
+  <div class="row">
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Level</span>
+      </div>
+      <input type="number" placeholder="Level of Party" bind:value={playerLevels} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    </label>
+  </div>
+  <div class="row">
+    <label class="form-control w-full max-w-xs">
+      <div class="label">
+        <span class="label-text">Victories</span>
+      </div>
+      <input type="number" placeholder="Victories" bind:value={victories} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    </label>
+  </div>
+  {#if (playerCount > 0)}
+    <p>Current Encounter Strength <b>(ES)</b> is {encounterStrength}</p>
+  {/if}
+</div>
+
+
+
+<!-- 
     <h1>Step 1: Choose Encounter Difficulty </h1>
     <div class="row">
       <button class="btn btn-active" onclick={() => onEncounterDifficultyBtnClicked(Difficulties.Trivial)}>Trivial</button>
@@ -66,17 +97,9 @@ import { Difficulties, type Difficulty } from '../../lib/types/Difficulty';
     <div class="row">
       <p>{description}</p>
     </div>
-    <br/>
-
-    <h1>Step 2: Determining Encounter Difficulty </h1>
-    <input type="number" placeholder="Player Count" bind:value={playerCount} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
-    <input type="number" placeholder="Victories" bind:value={victories} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
-    <input type="number" placeholder="Level of Party" bind:value={playerLevels} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
-    {#if (playerCount > 0)}
-      <p>Your Encounter Strength is {encounterStrength}</p>
-    {/if}
-    <br/>
-
+    <br/> -->
+   
+<!-- 
     {#if showStep3}
       <h1>Step 3: Determine Encounter Budget </h1>
       <br />
@@ -89,8 +112,6 @@ import { Difficulties, type Difficulty } from '../../lib/types/Difficulty';
 
     {#if showStep5}
       <h1>Step 5: Build Initiative Groups</h1>
-    {/if}
-  </div>
-</div>
+    {/if} -->
 
 <Footer />

@@ -1,13 +1,27 @@
 <script lang="ts">
-  import Header from "../../lib/components/Header.svelte";
-  import Footer from "../../lib/components/Footer.svelte";
-  import { Difficulties, type Difficulty } from '../../lib/types/Difficulty';
+import Header from "../../lib/components/Header.svelte";
+import Footer from "../../lib/components/Footer.svelte";
+import { onMount } from 'svelte';
+import { Difficulties, type Difficulty } from '../../lib/types/Difficulty';
   
   let encounterDifficulty: Difficulty = Difficulties.Trivial;
-  let description = "test";
+  let description = $state("");
+  let showStep2 = $state(false);
+  let showStep3 = $state(false);
+  let showStep4 = $state(false);
+  let showStep5 = $state(false);
+  let playerCount = $state(1);
+  let playerLevels = $state(1);
+  let victories = $state(0);
+  let encounterStrength = $state(0);
+
+  onMount(() => {
+    determineEncounterStrength();
+  });
 
   function onEncounterDifficultyBtnClicked(status : Difficulty){
     encounterDifficulty = status;
+    showStep2 = true;
 
     if (status == Difficulties.Trivial){
       description = "Trivial encounters have a budget that is anything less than 75 percent of your Encounter Strength (ES)."
@@ -25,11 +39,21 @@
     }
   };
 
+  function determineEncounterStrength(){
+    
+    let baseline = 12;
+    let leveledStrength = playerLevels * 3;
+    let fakePlayerCount = Math.floor(victories / 3);
+    let playerStrength = playerCount + fakePlayerCount;
+    
+    encounterStrength = (baseline + leveledStrength) * playerStrength;
+  }
+
 </script>
 
 <Header />
 
-<div class="hero bg-base-200 min-h-screen">
+<div class="bg-base-200 min-h-screen">
   <div class="row">
     <h1>Step 1: Choose Encounter Difficulty </h1>
     <div class="row">
@@ -45,12 +69,27 @@
     <br/>
 
     <h1>Step 2: Determining Encounter Difficulty </h1>
+    <input type="number" placeholder="Player Count" bind:value={playerCount} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    <input type="number" placeholder="Victories" bind:value={victories} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    <input type="number" placeholder="Level of Party" bind:value={playerLevels} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+    {#if (playerCount > 0)}
+      <p>Your Encounter Strength is {encounterStrength}</p>
+    {/if}
     <br/>
-    <h1>Step 3: Determine Encounter Budget </h1>
-    <br />
-    <h1>Step 4: Spend the Budget</h1>
-    <br />
-    <h1>Step 5: Build Initiative Groups</h1>
+
+    {#if showStep3}
+      <h1>Step 3: Determine Encounter Budget </h1>
+      <br />
+    {/if}
+      
+    {#if showStep4}
+      <h1>Step 4: Spend the Budget</h1>
+      <br />
+    {/if}
+
+    {#if showStep5}
+      <h1>Step 5: Build Initiative Groups</h1>
+    {/if}
   </div>
 </div>
 

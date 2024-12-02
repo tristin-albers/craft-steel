@@ -53,7 +53,7 @@
 
 </div>
 
-<!-- Place body content here  -->
+<!-- Place body content here -->
 <div class="hero bg-base-200 min-h-screen">
   <div class="hero-content text-center">
     <div class="max-w-md">
@@ -70,23 +70,10 @@
 <!-- todo: make into footer comp -->
 <footer class="footer bg-neutral text-neutral-content p-10">
   <nav>
-    <h6 class="footer-title">Services</h6>
-    <a href="craft-steel-btn" class="link link-hover">Branding</a>
-    <a href="craft-steel-btn" class="link link-hover">Design</a>
-    <a href="craft-steel-btn" class="link link-hover">Marketing</a>
-    <a href="craft-steel-btn" class="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 class="footer-title">Company</h6>
-    <a href="craft-steel-btn" class="link link-hover">About us</a>
-    <a href="craft-steel-btn" class="link link-hover">Contact</a>
-    <a href="craft-steel-btn" class="link link-hover">Jobs</a>
-    <a href="craft-steel-btn" class="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 class="footer-title">Legal</h6>
-    <a href="craft-steel-btn" class="link link-hover">Terms of use</a>
-    <a href="craft-steel-btn" class="link link-hover">Privacy policy</a>
-    <a href="craft-steel-btn" class="link link-hover">Cookie policy</a>
+    <h6 class="footer-title">Legal Disclaimer</h6>
+    <div class="row">
+      I am not associated with MCDM productions, this site is a tool to help fellow gamers, table-top enjoyers, and directors. This site has no affiliation with the official MCDM Draw Steel product. 
+      If there is an issue please feel free to reach out to me, if any request made by the official team at MCDM or on behalf of MCDM Productions I would be happy to oblige. 
+    </div>
   </nav>
 </footer>

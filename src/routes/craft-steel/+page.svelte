@@ -14,21 +14,29 @@
   let victories = $state(0);
   let encounterStrength = $state(0);
   let encounterBudget = $state(0.0);
-  let difficulty = $state("");
-  let difficultyClass = $state("");
+  let difficulty = $state("Trivial");
+  let difficultyClass = $state("text-green-500");
 
   onMount(() => {
     determineEncounterStrength();
   });
 
   // Primary information functionality
-  function levelCheck(){
+  function parameterCheck(){
     if (playerLevels < 1){
-      playerLevels = 1
+      playerLevels = 1;
     }
 
     if (playerLevels > 10) {
-      playerLevels = 10
+      playerLevels = 10;
+    }
+
+    if (victories < 1){
+      victories = 1;
+    }
+
+    if (playerCount < 1){
+      playerCount = 1
     }
 
     determineEncounterStrength();
@@ -107,19 +115,19 @@
       <div class="label">
         <span class="label-text">Players</span>
       </div>
-      <input type="number" placeholder="Player Count" bind:value={playerCount} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+      <input type="number" placeholder="Player Count" bind:value={playerCount} onchange={parameterCheck} class="input input-bordered w-full max-w-xs" />
     </label>
     <label class="form-control w-full max-w-xs">
       <div class="label">
         <span class="label-text">Level</span>
       </div>
-      <input type="number" placeholder="Level of Party" bind:value={playerLevels} onchange={levelCheck} class="input input-bordered w-full max-w-xs" />
+      <input type="number" placeholder="Level of Party" bind:value={playerLevels} onchange={parameterCheck} class="input input-bordered w-full max-w-xs" />
     </label>
     <label class="form-control w-full max-w-xs">
       <div class="label">
         <span class="label-text">Victories</span>
       </div>
-      <input type="number" placeholder="Victories" bind:value={victories} onchange={determineEncounterStrength} class="input input-bordered w-full max-w-xs" />
+      <input type="number" placeholder="Victories" bind:value={victories} onchange={parameterCheck} class="input input-bordered w-full max-w-xs" />
     </label>
   </div>
 

@@ -2,7 +2,7 @@
   import Header from "../../components/Header.svelte";
   import Footer from "../../components/Footer.svelte";
   import { onMount } from 'svelte';
-  import { monsters } from '../../data/monsters';
+  import { monsters, type Monster } from '../../data/monsters';
   import { writable } from 'svelte/store';
 
   type Operation = 'increment' | 'decrement';
@@ -17,8 +17,21 @@
   let difficulty = $state("Trivial");
   let difficultyClass = $state("text-green-500");
 
+  const searchInput = writable(""); // User's raw input
+  const debouncedSearch = writable(""); // Debounced search value
+  const filteredMonsters = derived(
+    [monsterStore, debouncedSearch],
+    ([$monsterStore, $debouncedSearch]) => {
+      if (!$debouncedSearch) return $monsterStore; // No query, return all monsters
+      return $monsterStore.filter((monster) =>
+        monster.name.toLowerCase().includes($debouncedSearch.toLowerCase())
+      );
+    }
+  );
+
   onMount(() => {
     determineEncounterStrength();
+    ApplyFilters();
   });
 
   // Primary information functionality
@@ -49,6 +62,51 @@
     let playerStrength = playerCount + fakePlayerCount;
     
     encounterStrength = (baseline + leveledStrength) * playerStrength;
+  }
+
+  // search functionality
+  $effect(() => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        debouncedSearch.set($searchInput);
+    }, 300);
+  });
+
+  $effect(() => {
+    debouncedSearch.subscribe((value) => {
+      if (value) {
+        performSearch(value);
+      }
+    });
+  });
+
+  function ApplyFilters(){
+    if ($searchInput === ""){
+      filteredMonsters.set(monsters);
+    }
+  }
+
+  function performSearch(query: string) {
+    console.log(`Searching for: ${query}`);
+
+    // filter down monsterStore to only names that have the query in it
+    monsterStore.update((monsterList) => {
+      return monsterList.map((monster) => {
+        if (monster.name.toLowerCase().includes(query.toLowerCase())) {
+          // add to new collection called filteredMonsters
+          filteredMonsters.update((filteredMonsterList) => {
+            return [...filteredMonsterList, monster];
+          });
+        } else {
+          // remove from filteredMonsters
+          filteredMonsters.update((filteredMonsterList) => {
+            return filteredMonsterList.filter((filteredMonster) => filteredMonster.id !== monster.id);
+          });
+        }
+        return monster;
+      });
+    });
+
   }
 
   // Table information functionality
@@ -136,12 +194,17 @@
   </div>
 
   <div class="flex justify-between items-center mt-5">
-    <span class="text-lg">{`Current Budget Spent ${encounterBudget} of ${encounterStrength}`}</span>
-    <p class="text-right">
-      Difficulty:
-      <span class={`bold ${difficultyClass}`}>{difficulty}</span>
-      {description}
-    </p>
+    <div>
+      <input type="text" placeholder="Search..." bind:value={$searchInput} class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div>
+      <span class="text-lg">{`Current Budget Spent ${encounterBudget} of ${encounterStrength}`}</span>
+      <p class="text-right">
+        Difficulty:
+        <span class={`bold ${difficultyClass}`}>{difficulty}</span>
+        <!-- {description} -->
+      </p>
+    </div>
   </div>
 
   <div class="overflow-x-auto mt-5">
@@ -156,7 +219,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each $monsterStore as monster}
+        {#each $filteredMonsters as monster}
         <tr>
             <td>
               <div class="flex items-center gap-3">              
